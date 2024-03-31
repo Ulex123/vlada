@@ -49,14 +49,20 @@ for file in files:
                         texts[pagenum] += find_text_on_image(element, pageObj)
             else:
                 break
+       text_for_dateandcity_clear = re.sub("\n|\s+\w\s+", '', texts[0])
+        text_for_dateandcity = re.search(r'(Автореферат|АВТОРЕФЕРАТ|автореферат|A В Т О Р Е Ф Е Р А Т).*', text_for_dateandcity_clear, re.DOTALL)
+        if text_for_dateandcity == None:
+             text_for_dateandcity = texts[0]
+        else:
+            text_for_dateandcity = text_for_dateandcity[0]
+        date_and_city = re.search('([A-ЯЁ]\w*)(?:[-–—–, \n]*)(\d{4})', text_for_dateandcity, re.DOTALL)
+
         author = re.search('рукописи\s*[А-ЯЁ]\S*\s*[А-ЯЁ]\S+\s*(?:[А-ЯЁ]\S+)', texts[0])
         if author == None:
             author = ['None']
         else:
             author = re.findall(r'[A-ЯЁ]\w+', author[0])
             author = [author[0] + ' ' + author[1]]
-        text_for_dateandcity = re.search(r'(Автореферат|АВТОРЕФЕРАТ|автореферат).*', texts[0], re.DOTALL)
-        print(text_for_dateandcity)
         # dateandcity = re.search(r'([\n ]{6,}\w*([А-ЯЁ]\w*)(?:[-–—–, \n]*)(\d{4})\s* |([А-ЯЁ]\w*)(?:[-–—–, \n]*)(\d{4})\n*\s*$)', texts[0])
         # if dateandcity == None:
         #     dateandcity = ['None', 'None']
